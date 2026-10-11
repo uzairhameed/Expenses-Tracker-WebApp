@@ -25,7 +25,7 @@ services:
       MYSQL_ROOT_PASSWORD: Test@123
       MYSQL_DATABASE: expenses_tracker
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - ./java-app-data:/var/lib/mysql
     networks:
       - expenses-app-nw
     ports:
@@ -37,6 +37,18 @@ services:
       retries: 5
       start_period: 30s
     restart: always
+
+  nginx:
+    build: ./nginx
+    image: nginx
+    container_name: "nginx_cont"
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - java_app
+    networks:
+      - expenses-app-nw
 
 networks:
     expenses-app-nw:
